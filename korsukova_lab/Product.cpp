@@ -8,34 +8,35 @@ static int MAX_PRICE = 10000000;
 
 
 Product::Product() {
-	name = "";
-	manufacturer = "";
+	name = L"";
+	manufacturer = L"";
 	price = 0;
 	id = MaxId++;
-	cout << "Создал продукт :)" << endl;
+	wcout << L"Создал продукт :)" << endl;
 }
 
-istream& operator >> (istream& in, Product& product) {
-	cout << "Введите название продукта: " << endl;
+wistream& operator >> (wistream& in, Product& product) {
+	wcout << L"Введите название продукта: " << endl;
 	product.name = input_string();
 
-	cout << "Введите производителя продукта: " << endl;
+	wcout << L"Введите производителя продукта: " << endl;
 	product.manufacturer = input_string();
 
-	cout << "Введите цену продукта: " << endl;
+	wcout << L"Введите цену продукта: " << endl;
 	product.price = GetCorrectNumber(0, MAX_PRICE);
 
 	return in;
 }
 
-ostream& operator << (ostream& out, Product& product) {
-	out << "\nТовар ID " << product.id << endl;
-	out << "Название: " << product.name << "\nПроизводитель: " << product.manufacturer <<
-		"\nЦена: " << product.price << endl;
+wostream& operator << (wostream& out, Product& product) {
+	out << L"\nТовар ID " << product.id << endl;
+	out << L"Название: " << product.name << 
+		L"\nПроизводитель: " << product.manufacturer <<
+		L"\nЦена: " << product.price << endl;
 	return out;
 }
 
-ifstream& operator >> (ifstream& fin, Product& product) {
+wifstream& operator >> (wifstream& fin, Product& product) {
 	if (fin.is_open()) {
 		fin >> ws;
 		getline(fin, product.name);
@@ -47,7 +48,7 @@ ifstream& operator >> (ifstream& fin, Product& product) {
 	return fin;
 }
 
-ofstream& operator << (ofstream& fout, Product& product) {
+wofstream& operator << (wofstream& fout, Product& product) {
 	if (fout.is_open()) {
 		fout << product.name << endl;
 		fout << product.manufacturer << endl;
@@ -58,5 +59,5 @@ ofstream& operator << (ofstream& fout, Product& product) {
 }
 
 Product::~Product() {
-	cout << "Удалил продукт :)" << endl;
+	wcout << L"Удалил продукт :)" << endl;
 }

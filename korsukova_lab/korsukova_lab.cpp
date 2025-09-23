@@ -7,19 +7,22 @@
 using namespace std;
 
 int main() {
-    SetConsoleOutputCP(1251);
-    SetConsoleCP(1251);
+
+    std::locale::global(std::locale("rus_rus.866"));
+    wcin.imbue(std::locale());
+    wcout.imbue(std::locale());
+
     Manager m;
 
     while (1) {
         system("cls");
-        cout << "Выберите действие:" << endl;
-        cout << "1. Ввести данные о товаре" << endl;
-        cout << "2. Вывести список товаров" << endl;
-        cout << "3. Очистить список товаров" << endl;
-        cout << "4. Сохранить список товаров" << endl;
-        cout << "5. Загрузить список товаров из файла" << endl;
-        cout << "0. Выход" << endl;
+        wcout << L"Выберите действие:" << endl;
+        wcout << L"1. Ввести данные о товаре" << endl;
+        wcout << L"2. Вывести список товаров" << endl;
+        wcout << L"3. Очистить список товаров" << endl;
+        wcout << L"4. Сохранить список товаров" << endl;
+        wcout << L"5. Загрузить список товаров из файла" << endl;
+        wcout << L"0. Выход" << endl;
 
 
         switch (GetCorrectNumber(0, 5)) {

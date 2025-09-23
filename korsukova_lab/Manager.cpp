@@ -5,25 +5,25 @@
 using namespace std;
 
 
-void Manager::createProduct() {
+void Manager::createProduct() { //переделать
 	system("cls");
 	Product* p = new Product;
-	cin >> *p;
+	wcin >> *p;
 	products.push_back(p);
 }
 
 void Manager::showProducts() {
 	system("cls");
 	if (products.empty()) {
-		cout << "Товаров для просмотра нет!" << endl;
+		wcout << L"Товаров для просмотра нет!" << endl;
 		system("pause");
 		return;
 	}
-	cout << "Список имеющихся товаров:" << endl;
+	wcout << L"Список имеющихся товаров:" << endl;
 	for (auto product : products) {
-		cout << *product << endl;
+		wcout << *product << endl;
 	}
-	cout << endl;
+	wcout << endl;
 	system("pause");
 }
 
@@ -31,7 +31,7 @@ void Manager::showProducts() {
 void Manager::clearProducts() {
 	system("cls");
 	if (products.empty()) {
-		cout << "Товаров для очистки нет!" << endl;
+		wcout << L"Товаров для очистки нет!" << endl;
 		system("pause");
 		return;
 	}
@@ -41,7 +41,7 @@ void Manager::clearProducts() {
 	products.clear();
 
 	if (products.empty()) {
-		cout << "Товары очищены успешно!" << endl;
+		wcout << L"Товары очищены успешно!" << endl;
 		system("pause");
 		return;
 	}
@@ -50,33 +50,33 @@ void Manager::clearProducts() {
 void Manager::saveProducts() {
 	system("cls");
 	if (!products.empty()) {
-		cout << "Введите имя файла сохранения:" << endl;
-		string name = input_string();
-		name = "Saves\\" + name + ".txt";
-		ofstream file;
+		wcout << L"Введите имя файла сохранения:" << endl;
+		wstring name = input_string();
+		name = L"Saves\\" + name + L".txt";
+		wofstream file;
 		file.open(name, ios::out);
 		file << products.size() << endl;
 		for (auto& product : products) {
 			file << *product;
 		}
 		file.close();
-		cout << "Успешно сохранено!" << endl; system("pause");
+		wcout << L"Успешно сохранено!" << endl; system("pause");
 	}
-	else { cout << "Сохранение не должно быть пустым! Запишите несколько товаров." << endl; system("pause"); }
+	else { wcout << L"Сохранение не должно быть пустым! Запишите несколько товаров." << endl; system("pause"); }
 }
 
 void Manager::loadProducts() {
 	system("cls");
-	ifstream file;
-	std::string path = "Saves\\";
+	wifstream file;
+	std::wstring path = L"Saves\\";
 	vector<filesystem::directory_entry> names;
 	int count = 0;
 	for (auto& name : filesystem::directory_iterator(path)) {
 		count++;
 		names.push_back(name);
-		cout << count << ". " << name.path().filename() << endl;
+		wcout << count << ". " << name.path().filename() << endl;
 	}
-	cout << "Выберите номер файла сохранения" << endl;
+	wcout << L"Выберите номер файла сохранения" << endl;
 	int save = GetCorrectNumber(1, count);
 
 	products.clear();
@@ -93,12 +93,12 @@ void Manager::loadProducts() {
 		products.push_back(p);
 	}
 	file.close();
-	cout << "Файл загружен!\n" << endl;
+	wcout << L"Файл загружен!\n" << endl;
 	system("pause");
 }
 
 Manager::Manager() {
-	cout << "Создал Менеджера :)" << endl;
+	wcout << L"Создал Менеджера :)" << endl;
 }
 
 Manager::~Manager() {
@@ -106,5 +106,5 @@ Manager::~Manager() {
 		delete product;
 	}
 	products.clear();
-	cout << "Удалил Менеджера :)" << endl;
+	wcout << L"Удалил Менеджера :)" << endl;
 }

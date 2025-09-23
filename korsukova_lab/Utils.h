@@ -6,24 +6,24 @@ template <typename T>
 T GetCorrectNumber(T min, T max)
 {
     T x;
-    while ((std::cin >> x).fail()
-        || std::cin.peek() != '\n'
+    while ((std::wcin >> x).fail()
+        || std::wcin.peek() != '\n'
         || x < min || x > max)
     {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        std::cout << "\nНеверный ввод!" << std::endl;
-        std::cout << "Введите число от " << min << " до " << max << std::endl;
+        std::wcin.clear();
+        std::wcin.ignore(256, '\n');
+        std::wcout << L"\nНеверный ввод!" << std::endl;
+        std::wcout << L"Введите число от " << min << " до " << max << std::endl;
     }
     //std::cerr << x << std::endl;
     return x;
 }
 
-inline std::string input_string()
+inline std::wstring input_string()
 {
-    std::cin >> std::ws;
-    std::string str;
-    std::getline(std::cin, str);
+    //std::wcin >> std::ws;
+    std::wstring str;
+    std::getline(std::wcin>> std::ws, str);
     //std::cerr << str << std::endl;
     return str;
 }
