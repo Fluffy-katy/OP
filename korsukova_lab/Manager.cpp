@@ -6,17 +6,14 @@ using namespace std;
 
 
 void Manager::createProduct() { //переделать
-	system("cls");
 	Product* p = new Product;
 	wcin >> *p;
 	products.push_back(p);
 }
 
 void Manager::showProducts() {
-	system("cls");
 	if (products.empty()) {
 		wcout << L"Товаров для просмотра нет!" << endl;
-		system("pause");
 		return;
 	}
 	wcout << L"Список имеющихся товаров:" << endl;
@@ -24,17 +21,15 @@ void Manager::showProducts() {
 		wcout << *product << endl;
 	}
 	wcout << endl;
-	system("pause");
 }
 
 
 void Manager::clearProducts() {
-	system("cls");
 	if (products.empty()) {
 		wcout << L"Товаров для очистки нет!" << endl;
-		system("pause");
 		return;
 	}
+
 	for (auto product : products) {
 		delete product;
 	}
@@ -42,13 +37,11 @@ void Manager::clearProducts() {
 
 	if (products.empty()) {
 		wcout << L"Товары очищены успешно!" << endl;
-		system("pause");
 		return;
 	}
 }
 
 void Manager::saveProducts() {
-	system("cls");
 	if (!products.empty()) {
 		wcout << L"Введите имя файла сохранения:" << endl;
 		wstring name = input_string();
@@ -62,11 +55,10 @@ void Manager::saveProducts() {
 		file.close();
 		wcout << L"Успешно сохранено!" << endl; system("pause");
 	}
-	else { wcout << L"Сохранение не должно быть пустым! Запишите несколько товаров." << endl; system("pause"); }
+	else { wcout << L"Сохранение не должно быть пустым! Запишите несколько товаров." << endl;}
 }
 
 void Manager::loadProducts() {
-	system("cls");
 	wifstream file;
 	std::wstring path = L"Saves\\";
 	vector<filesystem::directory_entry> names;
@@ -80,11 +72,10 @@ void Manager::loadProducts() {
 	int save = GetCorrectNumber(1, count);
 
 	products.clear();
+	
 	int count_products;
-
 	file.open(names[save - 1]);
 	file >> count_products;
-
 
 	while (count_products--)
 	{
@@ -94,7 +85,6 @@ void Manager::loadProducts() {
 	}
 	file.close();
 	wcout << L"Файл загружен!\n" << endl;
-	system("pause");
 }
 
 Manager::Manager() {
@@ -102,9 +92,9 @@ Manager::Manager() {
 }
 
 Manager::~Manager() {
-	for (auto product : products) {
-		delete product;
-	}
-	products.clear();
+	//for (auto product : products) {
+	//	delete product;
+	//}
+	clearProducts();
 	wcout << L"Удалил Менеджера :)" << endl;
 }
