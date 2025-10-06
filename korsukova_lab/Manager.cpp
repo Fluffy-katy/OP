@@ -1,13 +1,22 @@
 ﻿#include "Manager.h"
 #include "Utils.h"
+#include <vector>
+#include <fstream>
 #include <filesystem>
+#include <memory>
 
 using namespace std;
 
 
 void Manager::createProduct() { //переделать
-	Product* p = new Product;
-	wcin >> *p;
+	shared_ptr<Product> p(new Product);
+	p->writeInfo();
+	products.push_back(p);
+}
+
+void Manager::createElectronics() {
+	shared_ptr<Product> p(new Electronics);
+	p->writeInfo();
 	products.push_back(p);
 }
 
@@ -18,7 +27,7 @@ void Manager::showProducts() {
 	}
 	wcout << L"Список имеющихся товаров:" << endl;
 	for (auto product : products) {
-		wcout << *product << endl;
+		product->printInfo();
 	}
 	wcout << endl;
 }
@@ -29,12 +38,7 @@ void Manager::clearProducts() {
 		wcout << L"Товаров для очистки нет!" << endl;
 		return;
 	}
-
-	for (auto product : products) {
-		delete product;
-	}
 	products.clear();
-
 	if (products.empty()) {
 		wcout << L"Товары очищены успешно!" << endl;
 		return;
@@ -46,20 +50,22 @@ void Manager::saveProducts() {
 		wcout << L"Введите имя файла сохранения:" << endl;
 		wstring name = input_string();
 		name = L"Saves\\" + name + L".txt";
-		wofstream file;
-		file.open(name, ios::out);
-		file << products.size() << endl;
-		for (auto& product : products) {
-			file << *product;
-		}
-		file.close();
+		ofstream fout;
+		fout.open(name, ios::out);
+		boost::archive::text_oarchive ar(fout);
+		//ar << products.size();
+		//for (auto product : products){
+		//	ar << product;
+		//}
+		ar << products;
+		fout.close();
 		wcout << L"Успешно сохранено!" << endl; system("pause");
 	}
 	else { wcout << L"Сохранение не должно быть пустым! Запишите несколько товаров." << endl;}
 }
 
 void Manager::loadProducts() {
-	wifstream file;
+	//wifstream file;
 	std::wstring path = L"Saves\\";
 	vector<filesystem::directory_entry> names;
 	int count = 0;
@@ -71,19 +77,20 @@ void Manager::loadProducts() {
 	wcout << L"Выберите номер файла сохранения" << endl;
 	int save = GetCorrectNumber(1, count);
 
-	products.clear();
+	clearProducts();
 	
-	int count_products;
-	file.open(names[save - 1]);
-	file >> count_products;
-
-	while (count_products--)
-	{
-		Product* p = new Product;
-		file >> *p;
-		products.push_back(p);
-	}
-	file.close();
+	ifstream fin;
+	fin.open(names[save - 1]);
+	boost::archive::text_iarchive ar(fin);
+	/*size_t n;*/
+	/*ar >> n;*/
+	//for (int i = 0; i < n; ++i){
+	//	shared_ptr<Zimin_Product> p;
+	//	ar >> p;
+	//	products.push_back(p);
+	//}
+	ar >> products;
+	fin.close();
 	wcout << L"Файл загружен!\n" << endl;
 }
 
@@ -95,6 +102,6 @@ Manager::~Manager() {
 	//for (auto product : products) {
 	//	delete product;
 	//}
-	clearProducts();
+	//clearProducts();
 	wcout << L"Удалил Менеджера :)" << endl;
 }

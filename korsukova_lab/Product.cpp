@@ -3,6 +3,9 @@
 
 using namespace std;
 
+BOOST_CLASS_VERSION(Product, 1)
+BOOST_CLASS_EXPORT(Product)
+
 unsigned int Product::MaxId = 1;
 static int MAX_PRICE = 10000000;
 
@@ -15,47 +18,38 @@ Product::Product() {
 	wcout << L"Создал продукт :)" << endl;
 }
 
-wistream& operator >> (wistream& in, Product& product) {
+void Product::writeInfo() {
 	wcout << L"Введите название продукта: " << endl;
-	product.name = input_string();
+	name = input_string();
 
 	wcout << L"Введите производителя продукта: " << endl;
-	product.manufacturer = input_string();
+	manufacturer = input_string();
 
 	wcout << L"Введите цену продукта: " << endl;
-	product.price = GetCorrectNumber(0, MAX_PRICE);
-
-	return in;
+	price = GetCorrectNumber(0, MAX_PRICE);
 }
 
-wostream& operator << (wostream& out, Product& product) {
-	out << L"\nТовар ID " << product.id << endl;
-	out << L"Название: " << product.name << 
-		L"\nПроизводитель: " << product.manufacturer <<
-		L"\nЦена: " << product.price << endl;
-	return out;
+void Product::printInfo() {
+	wcout << L"\nТовар ID " << id << endl;
+	wcout << L"Название: " << name << 
+		L"\nПроизводитель: " << manufacturer <<
+		L"\nЦена: " << price << endl;
 }
 
-wifstream& operator >> (wifstream& fin, Product& product) {
-	if (fin.is_open()) {
-		fin >> ws;
-		getline(fin, product.name);
-		getline(fin, product.manufacturer);
-		fin >> product.price;
-		fin >> product.id;
-		Product::MaxId = (Product::MaxId < product.id) ? product.id : Product::MaxId;
-	}
-	return fin;
+template<class Archive>
+void Product::save(Archive& ar, const unsigned int version) const {
+	ar << name;
+	ar << manufacturer;
+	ar << price;
+	ar << id;
 }
 
-wofstream& operator << (wofstream& fout, Product& product) {
-	if (fout.is_open()) {
-		fout << product.name << endl;
-		fout << product.manufacturer << endl;
-		fout << product.price << endl;
-		fout << product.id << endl;
-	}
-	return fout;
+template<class Archive>
+void Product::load(Archive& ar, const unsigned int version) {
+	ar >> name;
+	ar >> manufacturer;
+	ar >> price;
+	ar >> id;
 }
 
 Product::~Product() {
